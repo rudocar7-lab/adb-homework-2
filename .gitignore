@@ -1,0 +1,14 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Compiled Java files
+out/
+*.class
+
+# Local database configuration
+/src/ConnectionFactory.java
+
+# Environment files
+.env
+.env.*
