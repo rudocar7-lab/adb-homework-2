@@ -243,4 +243,60 @@ The optimized implementation achieved substantially higher throughput in our mea
 
 The large overall improvement is mainly associated with reusing JDBC connections and reducing repeated setup overhead. The separate statement-reuse experiment demonstrates an additional, more targeted improvement in SQL transaction execution.
 
-The measurements
+
+The measurements were collected in separate benchmark runs using
+randomly generated workloads. Results may vary depending on system
+load, database state, hardware, and transaction distribution.
+
+The benchmark removes previously inserted Homework 3 rows before
+each run. However, UPDATE operations on existing rows are not reset.
+Therefore, these measurements represent observed performance rather
+than perfectly identical experimental conditions.
+
+## Challenges and Lessons Learned
+
+The main challenges included:
+
+- Implementing a continuous stream of database transactions.
+- Maintaining the required 60/10/10/20 workload distribution.
+- Ensuring that aborted transactions can be retried.
+- Preserving the original order of UPDATE statements.
+- Identifying performance bottlenecks using PostgreSQL EXPLAIN ANALYZE.
+- Separating JDBC connection overhead from SQL execution time.
+- Comparing serial and concurrent transaction throughput.
+
+We learned that measuring performance before optimizing is essential.
+We also learned how connection reuse, prepared statement reuse,
+and parallel execution affect database transaction throughput.
+
+## Conclusion
+
+We successfully extended Homework 2 with a more realistic database
+workload and implemented serial and concurrent benchmark solutions.
+
+Our analysis identified substantial JDBC connection overhead and
+showed that full-table aggregation is more expensive than individual
+indexed row lookups.
+
+We improved the implementation by reusing JDBC connections and
+PreparedStatement objects while preserving transaction behavior.
+
+The optimized implementation achieved a maximum observed throughput
+of 5,397.15 committed transactions per second with eight worker
+threads during a 30-second benchmark.
+
+All started transactions committed successfully in our recorded tests.
+
+The results demonstrate how profiling, careful optimization, and
+concurrent execution can improve database application performance.
+
+## References and Tools
+
+- Advanced Databases – Homework 3 assignment,
+  Paris Lodron University of Salzburg
+- PostgreSQL Documentation: https://www.postgresql.org/docs/
+- PostgreSQL JDBC Documentation: https://jdbc.postgresql.org/
+- Java Documentation: https://docs.oracle.com/en/java/
+- OpenAI ChatGPT – used for implementation assistance, debugging,
+  performance analysis, and documentation. The code was tested
+  locally and benchmark results were measured on our system.
